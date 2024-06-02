@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  # Will run on all PR's and pushes to main
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - name: Running build generation
+        run: |
+          make setup
+          make all
+
+      - name: Running formatting check
+        run: bash scripts/check_format.sh
+
+      - name: Running static analysis
+        run: make lint
