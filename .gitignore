@@ -7,5 +7,3 @@ cppcheckbuild/
 *.a2
 *.s1
 *.s2
-
-cpputest/
