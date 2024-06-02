@@ -2,9 +2,11 @@
 #define SCHEDULER_H
 
 #include "task.h"
+#include "rtos_status.h"
+#include <string.h>
 
-void init_scheduler();
-void start_scheduler();
-void create_task(TaskFunction taskFunction, uint8_t priority, const char *name);
+RTOSStatus init_scheduler();
+RTOSStatus start_scheduler();
+RTOSStatus create_task(TaskFunction taskFunction, uint8_t priority, const char *name);
 
 #endif

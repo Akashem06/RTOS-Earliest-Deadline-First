@@ -2,15 +2,21 @@
 #define MUTEX_H
 
 #include "task.h"
+#include "queue.h"
+#include "rtos_status.h"
+
+#include <stddef.h>
+#include <stdbool.h>
 
 typedef struct {
     bool locked;
-    bool original_polarity;
+    uint8_t priority;
     TaskControlBlock *owner;
+    Queue waiting_tasks;
 } Mutex;
 
-void init_mutex(Mutex* mutex);
-bool lock_mutex(Mutex* mutex);
-void unlock_mutex(Mutex* mutex);
+RTOSStatus init_mutex(Mutex* mutex);
+RTOSStatus lock_mutex(Mutex* mutex);
+RTOSStatus unlock_mutex(Mutex* mutex);
 
 #endif

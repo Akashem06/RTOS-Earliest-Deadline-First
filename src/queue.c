@@ -1,33 +1,36 @@
 #include "queue.h"
 
-void init_queue(Queue *q, uint8_t *buffer, uint32_t size) {
-    q->buffer = buffer;
-    q->maxLen = size;
-    q->head = 0;
-    q->tail = 0;
-    q->full = false;
+RTOSStatus init_queue(Queue *queue, uint8_t *buffer, uint32_t size) {
+    queue->buffer = buffer;
+    queue->head = 0;
+    queue->tail = 0;
+    queue->len = size;
+    queue->full = false;
+
+    return RTOS_OK;
 }
 
-bool enqueue(Queue *q, uint8_t data) {
-    if (q->full) {
-        return false;
+RTOSStatus enqueue(Queue *queue, uint8_t data) {
+    if (!queue->buffer) {
+        return RTOS_UNINITIALIZED;
+    } else if (queue->full) {
+        return RTOS_RESOURCE_EXHAUSTED;
     }
 
-    q->buffer[q->head] = data;
-    q->head = (q->head + 1) % q->maxLen;
-    q->full = (q->head == q->tail);
+    queue->buffer[queue->tail] = data;
+    queue->tail = (queue->tail + 1) % queue->len;
+
+    return RTOS_OK;
 }
 
 
-bool dequeue(Queue *q, uint8_t *data) {
-    if (q->head == q->tail && !q->full) {
-        enableInterrupts();
-        return false;
+RTOSStatus dequeue(Queue *queue, uint8_t *data) {
+    if (!queue->buffer) {
+        return RTOS_UNINITIALIZED;
     }
 
-    *data = q->buffer[q->tail];
-    q->tail = (q->tail + 1) % q->maxLen;
-    q->full = false;
+    data = &queue->buffer[queue->head];
+    queue->head = (queue->head + 1) %queue->len;
 
-    return true;
+    return RTOS_OK;
 }

@@ -1,7 +1,7 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include <cstdint>
+#include <stdint.h>
 
 typedef enum {
     TASK_READY,
@@ -23,5 +23,9 @@ typedef struct {
 
 #define MAX_TASKS 10
 #define STACK_SIZE 1024
+
+extern TaskControlBlock task_list[MAX_TASKS];
+extern uint32_t task_stacks[MAX_TASKS][STACK_SIZE];
+extern uint8_t current_task_index;
 
 #endif
