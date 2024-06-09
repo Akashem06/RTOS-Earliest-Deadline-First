@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILES=$(find . -name "*.c" -o -name "*.h" -not -path "./cpputest/*")
+FILES=$(find . -type f \( -name "*.c" -o -name "*.h" \) -not -path "./cpputest/*")
 
 format_check=0
 
