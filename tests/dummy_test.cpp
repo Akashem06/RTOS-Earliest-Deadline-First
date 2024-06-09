@@ -1,9 +1,9 @@
 #include "CppUTest/TestHarness.h"
 
 // create a test group
-TEST_GROUP(dummy_test){
+TEST_GROUP(DummyTest){
 
 };
 
 // create a test for that test group
-TEST(dummy_test, pass_me) { CHECK_EQUAL(1, 1); }
+TEST(DummyTest, PassMe) { CHECK_EQUAL(1, 1); }

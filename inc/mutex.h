@@ -1,17 +1,17 @@
 #ifndef MUTEX_H
 #define MUTEX_H
 
-#include "task.h"
+#include <stdbool.h>
+#include <stddef.h>
+
 #include "queue.h"
 #include "rtos_status.h"
-
-#include <stddef.h>
-#include <stdbool.h>
+#include "task.h"
 
 typedef struct {
     bool locked;
     uint8_t priority;
-    TaskControlBlock *owner;
+    TaskControlBlock* owner;
     Queue waiting_tasks;
 } Mutex;
 

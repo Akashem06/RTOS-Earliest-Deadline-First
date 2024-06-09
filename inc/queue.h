@@ -1,9 +1,10 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include "rtos_status.h"
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
+
+#include "rtos_status.h"
 
 typedef struct {
     uint8_t *buffer;

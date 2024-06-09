@@ -16,8 +16,8 @@ typedef struct {
     TaskFunction taskFunction;  // Task function pointer
     uint32_t *stackPointer;     // Pointer to the task's stack
     TaskState state;            // Current state of the task
-    uint8_t priority;           // Task priority
-    uint32_t delay;             // Delay for task to unblock (for time-delayed tasks)
+    uint32_t period;            // Task period/frequency
+    uint32_t deadline;          // Deadline period storage variable
     char taskName[16];          // Task name for debugging
 } TaskControlBlock;
 
@@ -27,5 +27,6 @@ typedef struct {
 extern TaskControlBlock task_list[MAX_TASKS];
 extern uint32_t task_stacks[MAX_TASKS][STACK_SIZE];
 extern uint8_t current_task_index;
+extern uint32_t system_time;
 
 #endif

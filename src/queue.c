@@ -23,14 +23,13 @@ RTOSStatus enqueue(Queue *queue, uint8_t data) {
     return RTOS_OK;
 }
 
-
 RTOSStatus dequeue(Queue *queue, uint8_t *data) {
     if (!queue->buffer) {
         return RTOS_UNINITIALIZED;
     }
 
-    data = &queue->buffer[queue->head];
-    queue->head = (queue->head + 1) %queue->len;
+    *data = queue->buffer[queue->head];
+    queue->head = (queue->head + 1) % queue->len;
 
     return RTOS_OK;
 }
