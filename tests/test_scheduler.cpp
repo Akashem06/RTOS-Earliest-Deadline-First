@@ -15,15 +15,23 @@ static void dummy_task(void *args) {
 
 static int task1_call = 0;
 static int task2_call = 0;
+static int task3_call = 0;
+static int task4_call = 0;
 
 static void task1(void *args) {
     task1_call++;
-    std::cout << "TASK1: " << task1_call << std::endl;
 }
 
 static void task2(void *args) {
     task2_call++;
-    std::cout << "TASK2: " << task2_call << std::endl;
+}
+
+static void task3(void *args) {
+    task3_call++;
+}
+
+static void task4(void *args) {
+    task4_call++;
 }
 
 TEST_GROUP(TestScheduler) {
@@ -90,9 +98,11 @@ TEST(TestScheduler, TickHandler) {
 TEST(TestScheduler, TwoTasksConcurrency) {
     CHECK_EQUAL(RTOS_OK, create_task(task1, NULL, 100, 0, "Task 1"));
     CHECK_EQUAL(RTOS_OK, create_task(task2, NULL, 30, 0, "Task 2"));
+    CHECK_EQUAL(RTOS_OK, create_task(task3, NULL, 50, 10, "Task 3"));
+    CHECK_EQUAL(RTOS_OK, create_task(task4, NULL, 25, 0, "Task 4"));
     CHECK_EQUAL(RTOS_OK, start_scheduler());
 
-    // Simulate 200 ticks to observe task execution
+    // Simulate 201 ticks to observe task execution
     for (int i = 0; i < 200; i++) {
         SysTick_Handler();
     }
@@ -100,4 +110,6 @@ TEST(TestScheduler, TwoTasksConcurrency) {
     // Assert task executions
     CHECK_EQUAL(3, task1_call);
     CHECK_EQUAL(7, task2_call);
+    CHECK_EQUAL(4, task3_call);
+    CHECK_EQUAL(8, task4_call);
 }

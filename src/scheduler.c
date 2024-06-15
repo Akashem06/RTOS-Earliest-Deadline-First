@@ -20,7 +20,17 @@ void edf_schedule(void) {
             min_deadline = task_list[i].deadline;
             next_task_index = i;
         }
+
+        // Deadline updating
+        if (task_list[i].deadline == 0) {
+            // Prevent dividing by 0
+            task_list[i].deadline = (task_list[i].deadline + task_list[i].period) % UINT32_MAX;
+        } else if (task_list[i].state == TASK_READY && system_time % task_list[i].deadline == 0) {
+            // The deadline has been reached, and the task must run
+            task_list[i].deadline = (task_list[i].deadline + task_list[i].period) % UINT32_MAX;
+        }
     }
+
     // Update the task state and switch context
     if (next_task_index != current_task_index) {
         task_list[current_task_index].state = TASK_READY;
@@ -136,18 +146,11 @@ void SysTick_Handler(void) {
 
     // Iterate through tasks to find the earliest deadline task
     for (int i = 0; i < active_tasks; i++) {
-        if (task_list[i].deadline == 0) {
-            // The deadline has been reached, and the task must run
-            task_list[i].deadline = (task_list[i].deadline + task_list[i].period) % UINT32_MAX;
-        } else if (task_list[i].state == TASK_READY && system_time % task_list[i].deadline == 0) {
-            // The deadline has been reached, and the task must run
-            task_list[i].deadline = (task_list[i].deadline + task_list[i].period) % UINT32_MAX;
-        }
-
         if (task_list[i].deadline < task_list[current_task_index].deadline) {
             context_switch_flag = true;
         }
     }
+
     // Check and update the currently running task's deadline if necessary
     if (task_list[current_task_index].deadline == system_time) {
         task_list[current_task_index].deadline = (task_list[current_task_index].deadline + task_list[current_task_index].period) % UINT32_MAX;

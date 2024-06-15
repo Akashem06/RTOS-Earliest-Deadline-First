@@ -18,6 +18,7 @@ typedef struct {
     TaskState state;            // Current state of the task
     uint32_t period;            // Task period/frequency
     uint32_t deadline;          // Deadline period storage variable
+    uint32_t current_deadlne;   // Deadline stored
     char taskName[16];          // Task name for debugging
 } TaskControlBlock;
 
