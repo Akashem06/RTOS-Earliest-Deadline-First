@@ -10,7 +10,7 @@ typedef enum {
     TASK_SUSPENDED
 } TaskState;
 
-typedef void (*TaskFunction)(void);
+typedef void (*TaskFunction)(void *args);
 
 typedef struct {
     TaskFunction taskFunction;  // Task function pointer
